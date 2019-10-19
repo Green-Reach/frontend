@@ -46,7 +46,7 @@ export default {
 				return coordsObj[key]
 			})
 			let end = {
-				type: 'Feature',
+				type: 'FeatureCollection',
 				features: [{
 					type: 'Feature',
 					properties: {},
@@ -86,21 +86,8 @@ export default {
 			this.addRoute(route)
 		},
 		addRoute(source) {
-			console.log("Source")
-			console.log(source)
-			let end = {
-				type: 'FeatureCollection',
-				features: [{
-					type: 'Feature',
-					properties: {},
-					geometry: {
-						type: 'Point',
-						coordinates: source
-					}
-				}]
-			}
 			if(this.map.getSource('route')) {
-				this.map.getSource('route').setData(end)
+				this.map.getSource('route').setData(source)
 			} else {
 				this.map.addLayer({
 					id: 'route',
@@ -112,7 +99,7 @@ export default {
 							properties: {},
 							geometry: {
 								type: 'LineString',
-								coordinates: end
+								coordinates: source
 							}
 						}
 					},
@@ -184,7 +171,7 @@ export default {
 				const endpoints = [newMark.lon, newMark.lat]
 				console.log("ADDING NEW MARK")
 				this.addMark('end', endpoints, 'red')	
-				await this.addRoute(endpoints)
+				
 			}
 		}
 	}
