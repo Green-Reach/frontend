@@ -11,7 +11,7 @@
 	</div>	
 </template>
 <script>
-import MapFrame from '@/components/Map/MapFrameClone'
+import MapFrame from '@/components/Map/MapFrame'
 import MapSidebar from "@/components/Map/MapSidebar"
 
 export default {

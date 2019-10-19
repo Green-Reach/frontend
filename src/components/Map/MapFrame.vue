@@ -83,7 +83,7 @@ export default {
 				}
 			};
 			console.log(geojson)
-			this.addRoute(route)
+			this.addRoute(geojson)
 		},
 		addRoute(source) {
 			if(this.map.getSource('route')) {
@@ -121,6 +121,14 @@ export default {
 				'red': 'red',
 				'blue': '#3887be'
 			}
+			let geojson = {
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'LineString',
+					coordinates: endpoints
+				}
+			};
 			const color = colors[type]
 			console.log(this.map.getSource(id))
 			if(this.map.getSource(id)){
@@ -164,14 +172,13 @@ export default {
 		}
 	},
 	watch: {
-		activeObj: async function(value){
+		activeObj(value){
 			console.log(value)
 			if(value !== null){
 				const newMark = value;
 				const endpoints = [newMark.lon, newMark.lat]
 				console.log("ADDING NEW MARK")
-				this.addMark('end', endpoints, 'red')	
-				
+				this.addMark('hospital1', endpoints, 'red')
 			}
 		}
 	}
