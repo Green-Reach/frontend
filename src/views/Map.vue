@@ -6,7 +6,7 @@
 				/>
 		</div>
 		<div class="map-frame">
-			<MapFrame :activeObj="activeObj" />
+			<MapFrame :activeObj="activeObj" :locations="locations"/>
 		</div>
 	</div>	
 </template>

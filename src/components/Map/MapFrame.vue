@@ -8,7 +8,7 @@ require('../../../node_modules/mapbox-gl/dist/mapbox-gl.css');
 
 export default {
 	name: "MapFrame",
-	props: [ "activeObj" ],
+	props: [ "activeObj", "locations"],
 	data() {
 		return {
 			accessKey: 'pk.eyJ1IjoiZGVydHJvY2t4IiwiYSI6ImNrMXcwZHB0bjBmb2gzY216ODA0NDZ3MWsifQ.IoDpTejvyHpWvvj_cjjRlw',
@@ -36,7 +36,6 @@ export default {
 			// this.map.setMaxBounds(bounds);
 
 		  	this.map.on('load', () => this.handleInitialLoad())
-		  	this.map.on('click', (event) => this.handleClick(event) )
 		},
 		// handles the click event when adding a new marker i.e. the end marker
 		handleClick: async function(event) {
@@ -66,6 +65,7 @@ export default {
 		handleInitialLoad: async function() {
 			await this.getRoute(this.center);
 			this.addMark('start', this.center, 'blue');
+			this.showAll();
 		},
 		// handles the pathfinding part.. draws a line that serves as the path to the destination.
 		getRoute: async function(end){
@@ -169,16 +169,67 @@ export default {
 					}
 				})
 			}
+		},
+		showAll() {
+			if(this.map.getLayer('hospital1')){
+				this.getRoute(this.center)
+				.then( () => {
+					this.map.removeLayer('hospital1');
+					this.map.removeSource('hospital1');
+				});
+			}
+			for(let i = 0; i < this.locations.length; i++){
+				if(Object.keys(this.locations[i]).length > 1){
+					const id = 'hospital' + i;
+					const coordinates = [this.locations[i].lon, this.locations[i].lat]
+					this.addMark(id, coordinates, 'red');
+				}
+			}
+		},
+		deleteAll() {
+			for(let i = 0; i < this.locations.length; i++){
+				if(Object.keys(this.locations[i]).length > 1){
+					const id = 'hospital' + i;
+					if(this.map.getLayer(id)) {
+						this.map.removeLayer(id);
+						this.map.removeSource(id);
+					}
+				}
+			}	
 		}
 	},
 	watch: {
-		activeObj(value){
+		activeObj: async function(value){
 			console.log(value)
+		
 			if(value !== null){
+				this.deleteAll()
 				const newMark = value;
 				const endpoints = [newMark.lon, newMark.lat]
 				console.log("ADDING NEW MARK")
-				this.addMark('hospital1', endpoints, 'red')
+				// this.addMark('hospital1', endpoints, 'red')
+
+				this.canvas.style.cursor = '';
+				let end = {
+					type: 'FeatureCollection',
+					features: [{
+						type: 'Feature',
+						properties: {},
+						geometry: {
+							type: 'Point',
+							coordinates: endpoints
+						}
+					}]
+				}
+				if (this.map.getLayer('hospital1')){
+					this.map.getSource('hospital1').setData(end)
+				} else {
+					this.addMark('hospital1', endpoints, 'red')
+				}
+				await this.getRoute(endpoints);
+			}
+			else {
+				this.showAll();
 			}
 		}
 	}
