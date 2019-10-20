@@ -1,33 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/map">Map</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Nav />      
     <router-view/>
   </div>
 </template>
+<script>
+import Nav from "@/components/Nav";
 
+export default {
+  components: {
+    Nav
+  }
+}
+
+</script>
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:300,400,600&display=swap');
+
+body {
+  font-family:"Helvetica", "sans-serif";
 }
 
-#nav {
-  padding: 30px;
+h1, h2, h3 {
+  font-family: "Montserrat", "sans-serif";
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

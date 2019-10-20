@@ -29,7 +29,7 @@ export default {
 				style: 'mapbox://styles/mapbox/streets-v9',
 				
 				center: this.center, // Manhattan
-				zoom: 14,
+				zoom: 12,
 			});
 			this.canvas = this.map.getCanvasContainer();
 			// var bounds = [[-123.069003, 45.395273], [-122.303707, 45.612333]];
